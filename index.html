@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Clicker Game</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #1a1a1a, #333);
+      color: white;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      margin-bottom: 120px; /* Add space for the banner ad */
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: #ff6f61;
+    }
+
+    #target {
+      font-size: 1.5rem;
+      margin: 10px 0;
+    }
+
+    #score, #timer {
+      font-size: 1.2rem;
+      margin: 10px 0;
+    }
+
+    /* Game Grid */
+    #game {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      gap: 10px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .tile {
+      width: 100px;
+      height: 100px;
+      background: #444;
+      cursor: pointer;
+      border-radius: 15px;
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    .tile:hover {
+      transform: scale(1.1);
+    }
+
+    /* Power-Up Button */
+    #powerUp {
+      margin: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background: #ff6f61;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    #powerUp:hover {
+      background: #ff3b2f;
+    }
+
+    /* Banner Ad */
+    #banner-ad {
+      width: 100%;
+      height: 100px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      font-size: 1rem;
+      z-index: 1000; /* Ensure the ad stays on top */
+    }
+
+    /* Custom Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .modal-content {
+      background: #333;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #ff6f61;
+    }
+
+    .modal-content p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    .modal-content button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background: #ff6f61;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin: 5px;
+    }
+
+    .modal-content button:hover {
+      background: #ff3b2f;
+    }
+
+    /* Animations */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .pulse {
+      animation: pulse 1.5s infinite;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Color Clicker</h1>
+    <div id="target">Tap on: <span id="targetColor" class="pulse">RED</span></div>
+    <div id="score">Score: 0</div>
+    <div id="timer">Time: 30</div>
+    <div id="game"></div>
+    <button id="powerUp">Freeze Time (Watch Ad)</button>
+  </div>
+  <div id="banner-ad">Banner Ad Placeholder</div>
+
+  <!-- Custom Modal for Game Over -->
+  <div id="gameOverModal" class="modal">
+    <div class="modal-content">
+      <h2>Game Over!</h2>
+      <p>Your final score is: <span id="finalScore">0</span></p>
+      <button id="restartButton">Play Again</button>
+    </div>
+  </div>
+
+  <!-- Custom Modal for Freeze Time -->
+  <div id="freezeTimeModal" class="modal">
+    <div class="modal-content">
+      <h2>Freeze Time</h2>
+      <p>Watch an ad to freeze the tiles for 10 seconds.</p>
+      <button id="watchAdButton">Watch Ad</button>
+      <button id="cancelButton">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Sound Effects -->
+  <audio id="correctSound" src="./correctSound.wav"></audio>
+  <audio id="incorrectSound" src="./incorrectSound.wav"></audio>
+  <audio id="gameOverSound" src="./gameOverSound.wav"></audio>
+  <!-- <audio id="correctSound" src="https://assets.mixkit.co/active_storage/sfx/2215/2215-preview.mp3"></audio>
+  <audio id="incorrectSound" src="https://assets.mixkit.co/active_storage/sfx/2747/2747-preview.mp3"></audio>
+  <audio id="gameOverSound" src="https://assets.mixkit.co/active_storage/sfx/1109/1109-preview.mp3"></audio> -->
+
+  <!-- Monetag Ad Script -->
+  <script src="https://code.monetag.com/YOUR_MONETAG_SCRIPT.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
